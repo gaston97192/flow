@@ -1,24 +1,32 @@
 
 import Fastify from 'fastify';
 
-
 class Server {
 
-     listen() {
-
-        const fastify = Fastify({
+    constructor() {
+        this.fastify = Fastify({
             logger: false
-          })
-          
+          });
 
-        fastify.listen({ port: process.env.PORT, host: process.env.HOST },  (err, address) => {
+          this.loadRoutes();
+    }
+
+    listen(){
+       this.fastify.listen({ port: process.env.PORT, host: process.env.HOST },  (err, address) => {
             if (err) {
-             console.error(" --> Error al levantar el servidor <--",err)
-             process.exit(1)
+              console.error(err);
+              process.exit(1);
             }
-            console.log(`server listening on ${address}`)
+            console.log(`Servidor corriendo en  ${address}`);
           })
+    }
+
+    loadRoutes() {
+        this.fastify.get('/v1/location', require('./routes/location'));
+        this.fastify.get('/v1/current/:city', require('./routes/current'));
+        this.fastify.get('/v1/forecast/:city', require('./routes/forecast'));
     }
 }
 
-module.exports = Server
+module.exports = Server;
+
