@@ -22,9 +22,14 @@ class Server {
     }
 
     loadRoutes() {
-        this.fastify.get('/v1/location', require('./routes/location'));
-        this.fastify.get('/v1/current/:city', require('./routes/current'));
-        this.fastify.get('/v1/forecast/:city', require('./routes/forecast'));
+       let baseUrl = process.env.BASEURL;
+
+        this.fastify.get(`${baseUrl}/location`, require('../routes/location'));
+
+        this.fastify.get(`${baseUrl}/current/:city`, require('../routes/current'));
+
+        this.fastify.get(`${baseUrl}/forecast/:city`, require('../routes/forecast'));
+        
     }
 }
 

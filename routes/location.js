@@ -1,43 +1,44 @@
 const { networkInterfaces } = require('os');
 
-const fetch = require('node-fetch');
-
 
 module.exports = async (request, reply) => {
 
-const nets = networkInterfaces();
-const results = Object.create(null); 
-let ip;
-let location;
+    let ip;
+    
+    let location;
 
-for (const name of Object.keys(nets)) {
-    for (const net of nets[name]) {
+    function getIp() {
+        const nets = networkInterfaces();
 
-        const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
-        if (net.family === familyV4Value && !net.internal) {
-            if (!results[name]) {
-                results[name] = [];
+        const results = Object.create(null); 
+
+        for (const name of Object.keys(nets)) {
+            for (const net of nets[name]) {
+        
+                const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
+                if (net.family === familyV4Value && !net.internal) {
+                    if (!results[name]) {
+                        results[name] = [];
+                    }
+                    results[name].push(net.address);
+                }
             }
-            results[name].push(net.address);
-        }
-      }
+            }
+        
+            if(results && results['Wi-Fi'] && results['Wi-Fi'][0]) return results['Wi-Fi'][0];
+            
+            else return null;
     }
+    
+      ip = getIp();
 
+      let urlIpApi = global.settings.ipApi.url + ip;
 
-
-    if(results && results['Wi-Fi'] && results['Wi-Fi'][0]) ip = results['Wi-Fi'][0];
-
-    else return { message: 'No se pudo obtener el ip' };
-
-    let urlIpApi = process.env.IPAPI_BASE + ip + "?access_key=" + process.env.IPAPI_KEY;
-
-      const responseIpApi = await fetch(urlIpApi)
+      const responseIpApi = await global.libs.fetch(urlIpApi)
            
-      location = await responseIpApi.text();
+      location = await responseIpApi.json();
 
+      if(location.status == global.settings.ipApi.statusResponse.fail)  return reply.send({  message: 'Ha ocurrido un error!!', location })
 
-      if(!location.success)  return { message: 'Hay ocurrido un error!', location }
-
-
-      else return { location }
+      else reply.send({ location })
   }
