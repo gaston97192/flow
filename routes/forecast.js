@@ -1,3 +1,3 @@
 module.exports = async (request, reply) => {
-    return { hello: 'forecast' }
-  }
+	return { hello: 'forecast' }
+}

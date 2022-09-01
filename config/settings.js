@@ -1,8 +1,6 @@
-
 const settings = {
-
 	openWheater: {
-		key: "3fa1df3e15436578eae91ab586a2a58a"
+		key: '3fa1df3e15436578eae91ab586a2a58a'
 	},
 
 	ipApi: {
@@ -14,4 +12,4 @@ const settings = {
 	}
 }
 
-module.exports = settings;
+module.exports = settings

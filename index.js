@@ -1,19 +1,18 @@
-import settings from './config/settings';
+import settings from './config/settings' 
+require('dotenv').config()
 
-require('dotenv').config();
-
-const Server = require('./server/server');
+const Server = require('./server/server')
 
 //configuraciones
-global.settings = settings;
+global.settings = settings
 
 const libs = {
-    "fetch": require('node-fetch'),
+	'fetch': require('node-fetch')
 }
 
-global.libs = libs;
+global.libs = libs
 
 //Se instancia y se levanta el server
-const server = new Server();
+const server = new Server()
 
-server.listen();
+server.listen() 
