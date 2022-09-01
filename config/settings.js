@@ -4,7 +4,8 @@ const settings = {
 		url: 'http://api.openweathermap.org',
 		methods: {
 			geo: '/geo/1.0/direct',
-			weahter: '/data/2.5/weather'
+			weahter: '/data/2.5/weather',
+			forecast: '/data/2.5/forecast'
 		},
 		queryParams: {
 			q: '?q=',
@@ -13,7 +14,8 @@ const settings = {
 			lat: '?lat=',
 			lon: '&lon=',
 			units: '&units=metric',
-			lang: '&lang=es'
+			lang: '&lang=es',
+			cnt: '&cnt=5'
 		}
 	},
 
