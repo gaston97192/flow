@@ -31,14 +31,34 @@ module.exports = async (request, reply) => {
 	}
     
 	ip = getIp()
+	ip = '1.178.48.0'
+	
+	if(ip == null) {
+		return reply.send({  message: 'Error al obtener el ip!!' })
+	}
 
-	let urlIpApi = global.settings.ipApi.url + ip
+	else {
+		let urlIpApi = global.settings.ipApi.url + ip + global.settings.ipApi.queryParams.fields
 
-	const responseIpApi = await global.libs.fetch(urlIpApi)
-           
-	location = await responseIpApi.json()
+		const responseIpApi = await global.libs.fetch(urlIpApi)	   
+		location = await responseIpApi.json()
+	
+		if(location.status == global.settings.ipApi.statusResponse.fail)  return reply.send({  message: 'Ha ocurrido un error!!', location })
 
-	if(location.status == global.settings.ipApi.statusResponse.fail)  return reply.send({  message: 'Ha ocurrido un error!!', location })
+	
+		else {
 
-	else reply.send({ location })
+			let objectToReturn = {
+				'Pais': location.country,
+				'Ciudad': location.city,
+				'Region': location.regionName,
+				'Codigo_pais': location.countryCode,
+				'Latitud': location.lat,
+				'Longitud': location.lon,
+			}
+			
+
+			reply.send({ 'Ubicacion':objectToReturn })
+		}
+	}
 }

@@ -26,7 +26,7 @@ class Server {
 
 		this.fastify.get(`${baseUrl}/location`, require('../routes/location'))
 
-		this.fastify.get(`${baseUrl}/current/:city`, require('../routes/current'))
+		this.fastify.get(`${baseUrl}/current/:city?`, require('../routes/current'))
 
 		this.fastify.get(`${baseUrl}/forecast/:city`, require('../routes/forecast'))
         
