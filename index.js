@@ -12,7 +12,7 @@ const libs = {
 	'moment': require('moment')
 }
 
-libs.moment.locale('es')
+libs.moment.locale('es') 
 
 global.libs = libs
 
