@@ -29,7 +29,6 @@ module.exports = async (request, reply) => {
 				}
 			}
 		}
-		
 		if(results && results['Wi-Fi'] && results['Wi-Fi'][0]) return results['Wi-Fi'][0]
 			
 		else return null
@@ -51,9 +50,8 @@ module.exports = async (request, reply) => {
 		}
 	}
 	else {		
-		ip = getIp()
-		ip = '1.178.48.0'
 
+		ip =  request.query.ipDefault == 'true' ? global.settings.ipDefault : getIp()
 		
 		if(ip == null) {
 			return reply.send({  message: 'Error al obtener el ip!!' })
@@ -62,10 +60,11 @@ module.exports = async (request, reply) => {
 		else {
 			let urlIpApi = global.settings.ipApi.url + ip  + global.settings.ipApi.queryParams.fields
 	
-			const responseApi = await global.libs.fetch(urlIpApi)	   
+			const responseApi = await global.libs.fetch(urlIpApi)	
+  
 			const cityApi = await responseApi.json()
 
-			if(cityApi.status == global.settings.ipApi.statusResponse.fail)  return reply.send({  message: 'Ha ocurrido un error!!', cityApi })
+			if(Object.entries(cityApi).length === 0 || !cityApi.lat || !cityApi.lon ) return reply.send({  message: 'ha occurrido un error con IP-API. . Agregue ?ipDefault=true a la url e intente de nuevo' })
 
 			else {
 				responseObj.ubicacion = {
@@ -79,7 +78,6 @@ module.exports = async (request, reply) => {
 			}
 		}
 	}
-
 
 	let url = global.settings.openWheater.url + global.settings.openWheater.methods.weahter + global.settings.openWheater.queryParams.lat + responseObj.ubicacion.Latitud +
 	global.settings.openWheater.queryParams.lon +  responseObj.ubicacion.Longitud + global.settings.openWheater.queryParams.lang + global.settings.openWheater.queryParams.units  + 

@@ -26,7 +26,9 @@ const settings = {
 		queryParams: {
 			fields: '?fields=city,country,countryCode,regionName,lat,lon',
 		}
-	}
+	},
+
+	ipDefault: '1.178.48.0'
 }
 
 module.exports = settings

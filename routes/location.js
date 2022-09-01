@@ -30,8 +30,7 @@ module.exports = async (request, reply) => {
 		else return null
 	}
     
-	ip = getIp()
-	ip = '1.178.48.0'
+	ip =  request.query.ipDefault == 'true' ? global.settings.ipDefault : getIp()
 	
 	if(ip == null) {
 		return reply.send({  message: 'Error al obtener el ip!!' })
@@ -41,9 +40,10 @@ module.exports = async (request, reply) => {
 		let urlIpApi = global.settings.ipApi.url + ip + global.settings.ipApi.queryParams.fields
 
 		const responseIpApi = await global.libs.fetch(urlIpApi)	   
+		
 		location = await responseIpApi.json()
-	
-		if(location.status == global.settings.ipApi.statusResponse.fail)  return reply.send({  message: 'Ha ocurrido un error!!', location })
+
+		if(Object.entries(location).length === 0)  return reply.send({  message: 'ha occurrido un error con IP-API. . Agregue ?ipDefault=true a la url e intente de nuevo' })
 
 	
 		else {
