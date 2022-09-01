@@ -17,6 +17,8 @@ class Server {
 				console.error(err)
 				process.exit(1)
 			}
+			
+			address = address + `${process.env.BASEURL}/location`
 			console.log(`Servidor corriendo en  ${address}`)
 		})
 	}
