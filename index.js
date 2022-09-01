@@ -1,4 +1,4 @@
-import settings from './config/settings' 
+const settings = require('./config/settings')
 require('dotenv').config()
 
 const Server = require('./server/server')

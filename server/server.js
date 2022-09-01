@@ -1,5 +1,5 @@
 
-import Fastify from 'fastify'
+const Fastify = require('fastify')
 
 class Server {
 
